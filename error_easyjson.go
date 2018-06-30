@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjsonE34310f8DecodeGitlabComNgrsLibGoJsonapi(in *jlexer.Lexer, out *Error) {
+func easyjsonE34310f8DecodeGithubComSkamenetskiyJsonapi(in *jlexer.Lexer, out *Error) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -50,7 +50,7 @@ func easyjsonE34310f8DecodeGitlabComNgrsLibGoJsonapi(in *jlexer.Lexer, out *Erro
 		in.Consumed()
 	}
 }
-func easyjsonE34310f8EncodeGitlabComNgrsLibGoJsonapi(out *jwriter.Writer, in Error) {
+func easyjsonE34310f8EncodeGithubComSkamenetskiyJsonapi(out *jwriter.Writer, in Error) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -64,7 +64,7 @@ func easyjsonE34310f8EncodeGitlabComNgrsLibGoJsonapi(out *jwriter.Writer, in Err
 		}
 		out.String(string(in.Err))
 	}
-	{
+	if in.Code != 0 {
 		const prefix string = ",\"code\":"
 		if first {
 			first = false
@@ -80,23 +80,23 @@ func easyjsonE34310f8EncodeGitlabComNgrsLibGoJsonapi(out *jwriter.Writer, in Err
 // MarshalJSON supports json.Marshaler interface
 func (v Error) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonE34310f8EncodeGitlabComNgrsLibGoJsonapi(&w, v)
+	easyjsonE34310f8EncodeGithubComSkamenetskiyJsonapi(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Error) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonE34310f8EncodeGitlabComNgrsLibGoJsonapi(w, v)
+	easyjsonE34310f8EncodeGithubComSkamenetskiyJsonapi(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Error) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonE34310f8DecodeGitlabComNgrsLibGoJsonapi(&r, v)
+	easyjsonE34310f8DecodeGithubComSkamenetskiyJsonapi(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Error) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonE34310f8DecodeGitlabComNgrsLibGoJsonapi(l, v)
+	easyjsonE34310f8DecodeGithubComSkamenetskiyJsonapi(l, v)
 }

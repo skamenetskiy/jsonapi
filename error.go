@@ -9,7 +9,7 @@ import (
 //easyjson:json
 type Error struct {
 	Err  string `json:"error"`
-	Code int    `json:"code"`
+	Code int    `json:"code,omitempty"`
 }
 
 // Error implements error interface
