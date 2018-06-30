@@ -2,10 +2,10 @@ package jsonapi
 
 import (
 	"errors"
+	"os"
 
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
-	"os"
 )
 
 const (

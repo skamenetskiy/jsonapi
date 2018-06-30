@@ -1,10 +1,11 @@
 package main
 
 import (
-	"gitlab.com/ngrs/lib-go/jsonapi"
-	"log"
 	"errors"
+	"log"
 	"strconv"
+
+	"github.com/skamenetskiy/jsonapi"
 )
 
 func main() {

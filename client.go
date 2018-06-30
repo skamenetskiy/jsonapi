@@ -2,6 +2,7 @@ package jsonapi
 
 import (
 	"encoding/json"
+
 	"github.com/valyala/fasthttp"
 )
 

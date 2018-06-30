@@ -1,8 +1,9 @@
 package jsonapi
 
 import (
-	"github.com/valyala/fasthttp"
 	"encoding/json"
+
+	"github.com/valyala/fasthttp"
 )
 
 // Ctx is a wrapper for fasthttp.RequestCtx

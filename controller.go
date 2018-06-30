@@ -1,10 +1,11 @@
 package jsonapi
 
 import (
-	"github.com/valyala/fasthttp"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"errors"
+
+	"github.com/valyala/fasthttp"
 )
 
 // Controller interface
