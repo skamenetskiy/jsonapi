@@ -30,6 +30,11 @@ func (t *ErrorTestSuite) TestNewError() {
 	t.Equal(123, e2.Code)
 }
 
+func (t *ErrorTestSuite) TestError() {
+	e := NewError(errors.New("great error"), 456)
+	t.Equal("456: great error", e.Error())
+}
+
 func (t *ErrorTestSuite) TestMarshalJSON() {
 	e := NewError(errors.New("some error"), 678)
 	j, err := e.MarshalJSON()
