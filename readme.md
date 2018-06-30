@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/skamenetskiy/jsonapi.svg?branch=master)](https://travis-ci.org/skamenetskiy/jsonapi)
-[![godoc](https://godoc.org/github.com/skamenetskiy/jsonapi?status.svg)](http://godoc.org/github.com/skamenetskiy/jsonapi)
+[![codecov](https://codecov.io/gh/skamenetskiy/jsonapi/branch/master/graph/badge.svg)](https://codecov.io/gh/skamenetskiy/jsonapi)
 [![Go Report Card](https://goreportcard.com/badge/github.com/skamenetskiy/jsonapi)](https://goreportcard.com/report/github.com/skamenetskiy/jsonapi)
+[![godoc](https://godoc.org/github.com/skamenetskiy/jsonapi?status.svg)](http://godoc.org/github.com/skamenetskiy/jsonapi)
 
 # jsonapi
 A small library, built on top of fasthttp and fasthttprouter
