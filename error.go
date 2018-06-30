@@ -21,7 +21,7 @@ func (e Error) Error() string {
 func NewError(err error, code ...int) *Error {
 	e := new(Error)
 	e.Err = err.Error()
-	if len(code) == 1 {
+	if len(code) > 0 {
 		e.Code = code[0]
 	}
 	return e
