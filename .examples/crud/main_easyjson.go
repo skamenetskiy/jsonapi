@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController(in *jlexer.Lexer, out *names) {
+func easyjson89aae3efDecodeGithubComSkamenetskiyJsonapiExamplesCrud(in *jlexer.Lexer, out *animals) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		in.Skip()
@@ -26,21 +26,21 @@ func easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController(in *jlexe
 		in.Delim('[')
 		if *out == nil {
 			if !in.IsDelim(']') {
-				*out = make(names, 0, 8)
+				*out = make(animals, 0, 8)
 			} else {
-				*out = names{}
+				*out = animals{}
 			}
 		} else {
 			*out = (*out)[:0]
 		}
 		for !in.IsDelim(']') {
-			var v1 *name
+			var v1 *animal
 			if in.IsNull() {
 				in.Skip()
 				v1 = nil
 			} else {
 				if v1 == nil {
-					v1 = new(name)
+					v1 = new(animal)
 				}
 				if data := in.Raw(); in.Ok() {
 					in.AddError((*v1).UnmarshalJSON(data))
@@ -55,7 +55,7 @@ func easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController(out *jwriter.Writer, in names) {
+func easyjson89aae3efEncodeGithubComSkamenetskiyJsonapiExamplesCrud(out *jwriter.Writer, in animals) {
 	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 		out.RawString("null")
 	} else {
@@ -75,29 +75,29 @@ func easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController(out *jwri
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v names) MarshalJSON() ([]byte, error) {
+func (v animals) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController(&w, v)
+	easyjson89aae3efEncodeGithubComSkamenetskiyJsonapiExamplesCrud(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v names) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController(w, v)
+func (v animals) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson89aae3efEncodeGithubComSkamenetskiyJsonapiExamplesCrud(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *names) UnmarshalJSON(data []byte) error {
+func (v *animals) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController(&r, v)
+	easyjson89aae3efDecodeGithubComSkamenetskiyJsonapiExamplesCrud(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *names) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController(l, v)
+func (v *animals) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson89aae3efDecodeGithubComSkamenetskiyJsonapiExamplesCrud(l, v)
 }
-func easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController1(in *jlexer.Lexer, out *name) {
+func easyjson89aae3efDecodeGithubComSkamenetskiyJsonapiExamplesCrud1(in *jlexer.Lexer, out *animal) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -117,7 +117,9 @@ func easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController1(in *jlex
 		}
 		switch key {
 		case "id":
-			out.ID = int(in.Int())
+			out.ID = string(in.String())
+		case "type":
+			out.Type = string(in.String())
 		case "name":
 			out.Name = string(in.String())
 		default:
@@ -130,7 +132,7 @@ func easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController1(in *jlex
 		in.Consumed()
 	}
 }
-func easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController1(out *jwriter.Writer, in name) {
+func easyjson89aae3efEncodeGithubComSkamenetskiyJsonapiExamplesCrud1(out *jwriter.Writer, in animal) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -142,7 +144,17 @@ func easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController1(out *jwr
 		} else {
 			out.RawString(prefix)
 		}
-		out.Int(int(in.ID))
+		out.String(string(in.ID))
+	}
+	{
+		const prefix string = ",\"type\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.Type))
 	}
 	{
 		const prefix string = ",\"name\":"
@@ -158,25 +170,25 @@ func easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController1(out *jwr
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v name) MarshalJSON() ([]byte, error) {
+func (v animal) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController1(&w, v)
+	easyjson89aae3efEncodeGithubComSkamenetskiyJsonapiExamplesCrud1(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v name) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson89aae3efEncodeGitlabComNgrsLibGoJsonapiExamplesController1(w, v)
+func (v animal) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson89aae3efEncodeGithubComSkamenetskiyJsonapiExamplesCrud1(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *name) UnmarshalJSON(data []byte) error {
+func (v *animal) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController1(&r, v)
+	easyjson89aae3efDecodeGithubComSkamenetskiyJsonapiExamplesCrud1(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *name) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson89aae3efDecodeGitlabComNgrsLibGoJsonapiExamplesController1(l, v)
+func (v *animal) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson89aae3efDecodeGithubComSkamenetskiyJsonapiExamplesCrud1(l, v)
 }

@@ -19,7 +19,7 @@ func main() {
 }
 
 var (
-	names = &Names{
+	data = &names{
 		{1, "Peter"},
 		{2, "Tom"},
 		{3, "John"},
@@ -28,14 +28,14 @@ var (
 
 //go:generate easyjson
 //easyjson:json
-type Name struct {
+type name struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
 
 //go:generate easyjson
 //easyjson:json
-type Names []*Name
+type names []*name
 
 type controller struct {
 	jsonapi.BaseController
@@ -52,12 +52,12 @@ func (c *controller) Methods() jsonapi.ControllerMethods {
 }
 
 func (c *controller) getNames(ctx *jsonapi.Ctx) *jsonapi.Result {
-	return c.OK(names)
+	return c.OK(data)
 }
 
 func (c *controller) getNameByID(ctx *jsonapi.Ctx) *jsonapi.Result {
 	id, _ := strconv.Atoi(ctx.UserValue("id").(string))
-	for _, name := range *names {
+	for _, name := range *data {
 		if name.ID == id {
 			return c.OK(name)
 		}
