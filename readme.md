@@ -4,7 +4,7 @@
 [![godoc](https://godoc.org/github.com/skamenetskiy/jsonapi?status.svg)](http://godoc.org/github.com/skamenetskiy/jsonapi)
 
 # jsonapi
-A small library, built on top of fasthttp and fasthttprouter
+A small library, built on top of fasthttp, fasthttprouter and easyjson.
 
 # Quick start
 ```go
@@ -22,6 +22,7 @@ func main() {
 ```
 
 # Dependencies
+jsonapi is not a standalone library, it has some dependencies.
 - [fasthttp](https://github.com/valyala/fasthttp)
 - [fasthttprouter](https://github.com/buaazp/fasthttprouter)
 - [easyjson](https://github.com/mailru/easyjson)

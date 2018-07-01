@@ -1,7 +1,7 @@
 package jsonapi
 
 import (
-	"errors"
+	"net"
 	"os"
 
 	"github.com/buaazp/fasthttprouter"
@@ -20,10 +20,6 @@ const (
 	MethodConnect = "CONNECT"
 	MethodOptions = "OPTIONS"
 	MethodTrace   = "TRACE"
-)
-
-var (
-	ErrUnauthorized = errors.New("unauthorized")
 )
 
 // Handler defines the handler func
@@ -50,30 +46,57 @@ func NewServer(addr ...string) *Server {
 type Server struct {
 	addr     string
 	authFunc ServerAuthFunc
+	ln       net.Listener
 	router   *fasthttprouter.Router
+}
+
+func (s *Server) newListener() error {
+	if s.ln == nil {
+		var err error
+		s.ln, err = net.Listen("tcp4", s.addr)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // Listen starts http server and listens on defined addr
 func (s *Server) Listen() error {
-	return fasthttp.ListenAndServe(s.addr, s.router.Handler)
+	if err := s.newListener(); err != nil {
+		return err
+	}
+	return fasthttp.Serve(s.ln, s.router.Handler)
 }
 
 // ListenTLS starts http server and listens on defined addr with TLS
 // Reads TLS certificate from certFile and key from keyFile
 func (s *Server) ListenTLS(certFile string, keyFile string) error {
-	return fasthttp.ListenAndServeTLS(s.addr, certFile, keyFile, s.router.Handler)
+	if err := s.newListener(); err != nil {
+		return err
+	}
+	return fasthttp.ServeTLS(s.ln, certFile, keyFile, s.router.Handler)
 }
 
 // ListenTLSEmbed starts http server and listens on defined addr with TLS
 // Accepts TLS certificate in cert and key in key
 func (s *Server) ListenTLSEmbed(cert []byte, key []byte) error {
-	return fasthttp.ListenAndServeTLSEmbed(s.addr, cert, key, s.router.Handler)
+	if err := s.newListener(); err != nil {
+		return err
+	}
+	return fasthttp.ServeTLSEmbed(s.ln, cert, key, s.router.Handler)
 }
 
-// ListerUNIX starts http server and listens on UNIX socket
+// ListenUNIX starts http server and listens on UNIX socket
 // Accepts mode as file mode
 func (s *Server) ListenUNIX(mode os.FileMode) error {
 	return fasthttp.ListenAndServeUNIX(s.addr, mode, s.router.Handler)
+}
+
+// SetListener sets net.Listener that will be used
+func (s *Server) SetListener(ln net.Listener) *Server {
+	s.ln = ln
+	return s
 }
 
 // SetAddr sets listen address

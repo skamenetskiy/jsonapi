@@ -2,6 +2,12 @@ package jsonapi
 
 import (
 	"fmt"
+
+	"github.com/valyala/fasthttp"
+)
+
+var (
+	ErrUnauthorized = NewErrorString("unauthorized", fasthttp.StatusUnauthorized)
 )
 
 // Error is a custom error object
@@ -21,6 +27,15 @@ func (e Error) Error() string {
 func NewError(err error, code ...int) *Error {
 	e := new(Error)
 	e.Err = err.Error()
+	if len(code) > 0 {
+		e.Code = code[0]
+	}
+	return e
+}
+
+func NewErrorString(err string, code ...int) *Error {
+	e := new(Error)
+	e.Err = err
 	if len(code) > 0 {
 		e.Code = code[0]
 	}
