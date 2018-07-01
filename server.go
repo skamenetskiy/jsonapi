@@ -3,6 +3,7 @@ package jsonapi
 import (
 	"net"
 	"os"
+	"sync"
 
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
@@ -33,12 +34,15 @@ func NewServer(addr ...string) *Server {
 	s := &Server{
 		router:   fasthttprouter.New(),
 		authFunc: func(*Ctx) bool { return true },
+		mu:       new(sync.Mutex),
 	}
+	s.mu.Lock()
 	if len(addr) == 1 {
 		s.addr = addr[0]
 	} else {
 		s.addr = DefaultAddr
 	}
+	s.mu.Unlock()
 	return s
 }
 
@@ -48,17 +52,7 @@ type Server struct {
 	authFunc ServerAuthFunc
 	ln       net.Listener
 	router   *fasthttprouter.Router
-}
-
-func (s *Server) newListener() error {
-	if s.ln == nil {
-		var err error
-		s.ln, err = net.Listen("tcp4", s.addr)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	mu       *sync.Mutex
 }
 
 // Listen starts http server and listens on defined addr
@@ -103,6 +97,13 @@ func (s *Server) SetListener(ln net.Listener) *Server {
 func (s *Server) SetAddr(addr string) *Server {
 	s.addr = addr
 	return s
+}
+
+func (s *Server) GetAddr() string {
+	if s.ln != nil {
+		return s.ln.Addr().String()
+	}
+	return s.addr
 }
 
 // SetAuthFunc sets authentication func that will be triggered
@@ -211,4 +212,18 @@ func (s *Server) CRUDController(path string, ctrl CRUDController) *Server {
 	// Handle DELETE/Delete
 	s.ControllerMethod(MethodDelete, getCrudPath(path), ctrl.Delete)
 	return s
+}
+
+func (s *Server) newListener() error {
+	s.mu.Lock()
+	if s.ln == nil {
+		var err error
+		s.ln, err = net.Listen("tcp4", s.addr)
+		if err != nil {
+			s.mu.Unlock()
+			return err
+		}
+	}
+	s.mu.Unlock()
+	return nil
 }
