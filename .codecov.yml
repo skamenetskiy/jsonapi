@@ -1,0 +1,3 @@
+ignore:
+  - "*_easyjson.go"
+  - "*_test.go"
