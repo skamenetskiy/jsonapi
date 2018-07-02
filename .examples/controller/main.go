@@ -11,7 +11,7 @@ import (
 func main() {
 	err := jsonapi.
 		NewServer().
-		Controller(new(controller)).
+		Controller("/", new(controller)).
 		Listen()
 	if err != nil {
 		log.Fatal(err)

@@ -142,6 +142,10 @@ func (t *ServerTestSuite) TestServerDelete() {
 	t.Equal([]byte(`{"path":"/a1"}`), rs.Body())
 }
 
+func (t *ServerTestSuite) TestServerController() {
+
+}
+
 func (t *ServerTestSuite) getServer() (*fasthttputil.InmemoryListener, *Server) {
 	ln := fasthttputil.NewInmemoryListener()
 	return ln, NewServer().SetListener(ln)
@@ -162,4 +166,16 @@ func (t *ServerTestSuite) request(ln *fasthttputil.InmemoryListener, method stri
 	rs := fasthttp.AcquireResponse()
 	cl := t.getClient(ln)
 	return rq, rs, cl.Do(rq, rs)
+}
+
+type c1 struct {
+	BaseController
+}
+
+func (c *c1) Methods() ControllerMethods {
+	return ControllerMethods{
+		MethodGet: {
+
+		},
+	}
 }

@@ -23,7 +23,7 @@ func (c *Ctx) WriteJSON(v json.Marshaler) {
 	b, err := v.MarshalJSON()
 	if err != nil {
 		// output default marshal error
-		c.SetStatusCode(fasthttp.StatusInternalServerError)
+		c.SetStatusCode(StatusInternalServerError)
 		c.SetBody([]byte(`{"error":"failed to marshal json"}`))
 	} else {
 		// output json
@@ -66,28 +66,60 @@ func (c *Ctx) GetParamFloat64(k string) (float64, error) {
 	return strconv.ParseFloat(c.GetParamString(k), 0)
 }
 
+// OK is writing the response to response body with
+// http status 200OK
 func (c *Ctx) OK(v json.Marshaler) {
-	c.SetStatusCode(fasthttp.StatusOK)
+	c.SetStatusCode(StatusOK)
 	c.WriteJSON(v)
 }
 
-func (c *Ctx) ErrNotFound(err error) {
-	c.Err(err, fasthttp.StatusNotFound)
-}
-
-func (c *Ctx) ErrMethodNotAllowed(err error) {
-	c.Err(err, fasthttp.StatusMethodNotAllowed)
-}
-
-func (c *Ctx) ErrInternalServerError(err error) {
-	c.Err(err, fasthttp.StatusInternalServerError)
-}
-
-func (c *Ctx) ErrUnauthorized(err error) {
-	c.Err(err, fasthttp.StatusUnauthorized)
-}
-
+// Err is writing an error to response body with code
 func (c *Ctx) Err(err error, code int) {
 	c.SetStatusCode(code)
 	c.WriteJSON(Error{err.Error(), code})
+}
+
+// ErrBadRequest writes http error BadRequest to response body
+func (c *Ctx) ErrBadRequest(err error)  {
+	c.Err(err, StatusBadRequest)
+}
+
+// ErrUnauthorized writes http error Unauthorized to response body
+func (c *Ctx) ErrUnauthorized(err error)  {
+	c.Err(err, StatusUnauthorized)
+}
+
+// ErrForbidden writes http error Forbidden to response body
+func (c *Ctx) ErrForbidden(err error)  {
+	c.Err(err, StatusForbidden)
+}
+
+// ErrNotFound writes http error NotFound to response body
+func (c *Ctx) ErrNotFound(err error)  {
+	c.Err(err, StatusNotFound)
+}
+
+// ErrMethodNotAllowed writes http error MethodNotAllowed to response body
+func (c *Ctx) ErrMethodNotAllowed(err error)  {
+	c.Err(err, StatusMethodNotAllowed)
+}
+
+// ErrInternalServerError writes http error InternalServerError to response body
+func (c *Ctx) ErrInternalServerError(err error)  {
+	c.Err(err, StatusInternalServerError)
+}
+
+// ErrBadGateway writes http error BadGateway to response body
+func (c *Ctx) ErrBadGateway(err error)  {
+	c.Err(err, StatusBadGateway)
+}
+
+// ErrServiceUnavailable writes http error ServiceUnavailable to response body
+func (c *Ctx) ErrServiceUnavailable(err error)  {
+	c.Err(err, StatusServiceUnavailable)
+}
+
+// ErrGatewayTimeout writes http error GatewayTimeout to response body
+func (c *Ctx) ErrGatewayTimeout(err error)  {
+	c.Err(err, StatusGatewayTimeout)
 }

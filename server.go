@@ -3,6 +3,7 @@ package jsonapi
 import (
 	"net"
 	"os"
+	"path"
 	"sync"
 
 	"github.com/buaazp/fasthttprouter"
@@ -21,6 +22,17 @@ const (
 	MethodConnect = "CONNECT"
 	MethodOptions = "OPTIONS"
 	MethodTrace   = "TRACE"
+
+	StatusOK                  = 200
+	StatusBadRequest          = 400
+	StatusUnauthorized        = 401
+	StatusForbidden           = 403
+	StatusNotFound            = 404
+	StatusMethodNotAllowed    = 405
+	StatusInternalServerError = 500
+	StatusBadGateway          = 502
+	StatusServiceUnavailable  = 503
+	StatusGatewayTimeout      = 504
 )
 
 // Handler defines the handler func
@@ -113,8 +125,8 @@ func (s *Server) SetAuthFunc(authFunc ServerAuthFunc) {
 }
 
 // Route adds a new route handler to router
-func (s *Server) Route(method string, path string, handler Handler) *Server {
-	s.router.Handle(method, path, func(ctx *fasthttp.RequestCtx) {
+func (s *Server) Route(method string, p string, handler Handler) *Server {
+	s.router.Handle(method, p, func(ctx *fasthttp.RequestCtx) {
 		c := &Ctx{ctx}
 		c.SetHeader("Content-Type", "application/json")
 		c.SetHeader("Server", "jsonapi @ fasthttp")
@@ -131,54 +143,54 @@ func (s *Server) Route(method string, path string, handler Handler) *Server {
 }
 
 // Get is a shortcut to Route("GET"...)
-func (s *Server) Get(path string, handler Handler) *Server {
-	return s.Route(MethodGet, path, handler)
+func (s *Server) Get(p string, handler Handler) *Server {
+	return s.Route(MethodGet, p, handler)
 }
 
 // Head is a shortcut to Route("HEAD"...)
-func (s *Server) Head(path string, handler Handler) *Server {
-	return s.Route(MethodHead, path, handler)
+func (s *Server) Head(p string, handler Handler) *Server {
+	return s.Route(MethodHead, p, handler)
 }
 
 // Post is a shortcut to Route("POST"...)
-func (s *Server) Post(path string, handler Handler) *Server {
-	return s.Route(MethodPost, path, handler)
+func (s *Server) Post(p string, handler Handler) *Server {
+	return s.Route(MethodPost, p, handler)
 }
 
 // Put is a shortcut to Route("PUT"...)
-func (s *Server) Put(path string, handler Handler) *Server {
-	return s.Route(MethodPut, path, handler)
+func (s *Server) Put(p string, handler Handler) *Server {
+	return s.Route(MethodPut, p, handler)
 }
 
 // Patch is a shortcut to Route("PATCH"...)
-func (s *Server) Patch(path string, handler Handler) *Server {
-	return s.Route(MethodPatch, path, handler)
+func (s *Server) Patch(p string, handler Handler) *Server {
+	return s.Route(MethodPatch, p, handler)
 }
 
 // Delete is a shortcut to Route("DELETE"...)
-func (s *Server) Delete(path string, handler Handler) *Server {
-	return s.Route(MethodDelete, path, handler)
+func (s *Server) Delete(p string, handler Handler) *Server {
+	return s.Route(MethodDelete, p, handler)
 }
 
 // Connect is a shortcut to Route("CONNECT"...)
-func (s *Server) Connect(path string, handler Handler) *Server {
-	return s.Route(MethodConnect, path, handler)
+func (s *Server) Connect(p string, handler Handler) *Server {
+	return s.Route(MethodConnect, p, handler)
 }
 
 // Options is a shortcut to Route("OPTIONS"...)
-func (s *Server) Options(path string, handler Handler) *Server {
-	return s.Route(MethodOptions, path, handler)
+func (s *Server) Options(p string, handler Handler) *Server {
+	return s.Route(MethodOptions, p, handler)
 }
 
 // Trace is a shortcut to Route("TRACE"...)
-func (s *Server) Trace(path string, handler Handler) *Server {
-	return s.Route(MethodTrace, path, handler)
+func (s *Server) Trace(p string, handler Handler) *Server {
+	return s.Route(MethodTrace, p, handler)
 }
 
 // ControllerMethod registers a controller method handler by http method and path
 // This method can be called directly without a controller.
-func (s *Server) ControllerMethod(method string, path string, handler ControllerHandler) *Server {
-	s.Route(method, path, func(ctx *Ctx) {
+func (s *Server) ControllerMethod(method string, p string, handler ControllerHandler) *Server {
+	s.Route(method, p, func(ctx *Ctx) {
 		res := handler(ctx)
 		if res.Err != nil {
 			ctx.Err(res.Err, res.Err.Code)
@@ -190,10 +202,10 @@ func (s *Server) ControllerMethod(method string, path string, handler Controller
 }
 
 // Controller registers a controller
-func (s *Server) Controller(ctrl Controller) *Server {
+func (s *Server) Controller(basePath string, ctrl Controller) *Server {
 	for method, paths := range ctrl.Methods() {
-		for path, handler := range paths {
-			s.ControllerMethod(method, path, handler)
+		for p, handler := range paths {
+			s.ControllerMethod(method, path.Join(basePath, p), handler)
 		}
 	}
 	return s

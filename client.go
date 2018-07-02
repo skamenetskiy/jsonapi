@@ -48,6 +48,7 @@ func (c *Client) Request() *Request {
 	return r
 }
 
+// Get is making a http GET request
 func (c *Client) Get(uri string) (*Response, error) {
 	return c.Request().
 		SetMethod(MethodGet).
@@ -55,6 +56,7 @@ func (c *Client) Get(uri string) (*Response, error) {
 		Do()
 }
 
+// Post is making http POST request
 func (c *Client) Post(uri string, body json.Marshaler) (*Response, error) {
 	b, err := body.MarshalJSON()
 	if err != nil {
@@ -67,6 +69,7 @@ func (c *Client) Post(uri string, body json.Marshaler) (*Response, error) {
 		Do()
 }
 
+// Put is making http PUT request
 func (c *Client) Put(uri string, body json.Marshaler) (*Response, error) {
 	b, err := body.MarshalJSON()
 	if err != nil {
@@ -79,6 +82,7 @@ func (c *Client) Put(uri string, body json.Marshaler) (*Response, error) {
 		Do()
 }
 
+// Delete is making http DELETE request
 func (c *Client) Delete(uri string) (*Response, error) {
 	return c.Request().
 		SetMethod(MethodDelete).
@@ -95,26 +99,31 @@ type Request struct {
 	headers map[string]string // request headers
 }
 
+// SetMethod is setting request method
 func (r *Request) SetMethod(method string) *Request {
 	r.method = method
 	return r
 }
 
+// SetURI is setting request uri(path)
 func (r *Request) SetURI(uri string) *Request {
 	r.uri = uri
 	return r
 }
 
+// SetBody is setting request body bytes
 func (r *Request) SetBody(body []byte) *Request {
 	r.body = body
 	return r
 }
 
+// SetHeaders is setting(replacing) request headers map
 func (r *Request) SetHeaders(headers map[string]string) *Request {
 	r.headers = headers
 	return r
 }
 
+// SetHeader is setting a new request header
 func (r *Request) SetHeader(k string, v string) *Request {
 	if r.headers == nil {
 		r.headers = map[string]string{}

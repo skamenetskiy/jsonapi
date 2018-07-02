@@ -3,11 +3,10 @@ package jsonapi
 import (
 	"fmt"
 
-	"github.com/valyala/fasthttp"
 )
 
 var (
-	ErrUnauthorized = NewErrorString("unauthorized", fasthttp.StatusUnauthorized)
+	ErrUnauthorized = NewErrorString("unauthorized", StatusUnauthorized)
 )
 
 // Error is a custom error object
