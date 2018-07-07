@@ -160,5 +160,5 @@ type Response struct {
 
 // ReadJSON reads json into v from request body
 func (r *Response) ReadJSON(v json.Unmarshaler) error {
-	return v.UnmarshalJSON(r.Body())
+	return json.Unmarshal(r.Body(), v)
 }

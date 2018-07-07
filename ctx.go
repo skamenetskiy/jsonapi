@@ -14,7 +14,7 @@ type Ctx struct {
 
 // ReadJSON will try to read request body into v
 func (c *Ctx) ReadJSON(v json.Unmarshaler) error {
-	return v.UnmarshalJSON(c.PostBody())
+	return json.Unmarshal(c.PostBody(), v)
 }
 
 // WriteJSON will try to write v to response body
@@ -80,46 +80,46 @@ func (c *Ctx) Err(err error, code int) {
 }
 
 // ErrBadRequest writes http error BadRequest to response body
-func (c *Ctx) ErrBadRequest(err error)  {
+func (c *Ctx) ErrBadRequest(err error) {
 	c.Err(err, StatusBadRequest)
 }
 
 // ErrUnauthorized writes http error Unauthorized to response body
-func (c *Ctx) ErrUnauthorized(err error)  {
+func (c *Ctx) ErrUnauthorized(err error) {
 	c.Err(err, StatusUnauthorized)
 }
 
 // ErrForbidden writes http error Forbidden to response body
-func (c *Ctx) ErrForbidden(err error)  {
+func (c *Ctx) ErrForbidden(err error) {
 	c.Err(err, StatusForbidden)
 }
 
 // ErrNotFound writes http error NotFound to response body
-func (c *Ctx) ErrNotFound(err error)  {
+func (c *Ctx) ErrNotFound(err error) {
 	c.Err(err, StatusNotFound)
 }
 
 // ErrMethodNotAllowed writes http error MethodNotAllowed to response body
-func (c *Ctx) ErrMethodNotAllowed(err error)  {
+func (c *Ctx) ErrMethodNotAllowed(err error) {
 	c.Err(err, StatusMethodNotAllowed)
 }
 
 // ErrInternalServerError writes http error InternalServerError to response body
-func (c *Ctx) ErrInternalServerError(err error)  {
+func (c *Ctx) ErrInternalServerError(err error) {
 	c.Err(err, StatusInternalServerError)
 }
 
 // ErrBadGateway writes http error BadGateway to response body
-func (c *Ctx) ErrBadGateway(err error)  {
+func (c *Ctx) ErrBadGateway(err error) {
 	c.Err(err, StatusBadGateway)
 }
 
 // ErrServiceUnavailable writes http error ServiceUnavailable to response body
-func (c *Ctx) ErrServiceUnavailable(err error)  {
+func (c *Ctx) ErrServiceUnavailable(err error) {
 	c.Err(err, StatusServiceUnavailable)
 }
 
 // ErrGatewayTimeout writes http error GatewayTimeout to response body
-func (c *Ctx) ErrGatewayTimeout(err error)  {
+func (c *Ctx) ErrGatewayTimeout(err error) {
 	c.Err(err, StatusGatewayTimeout)
 }
